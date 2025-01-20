@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "filtered-dropdown-client-side-solution",
+    "id": "c794b55d-3e98-482e-9cf8-7397bb2a2e81",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true
+  },
+  "paths": {
+    "zippedPackage": "solution/lookup-dropdown.sppkg"
+  }
+}
