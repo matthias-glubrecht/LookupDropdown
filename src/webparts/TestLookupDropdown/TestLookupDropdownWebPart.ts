@@ -1,5 +1,5 @@
 /*
-  tslint:disable:max-line-length
+  tslint:disable:max-line-length no-any
 */
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
@@ -33,9 +33,9 @@ export default class TestLookupDropdownWebPart extends BaseClientSideWebPart<ITe
     const element: React.ReactElement<ITestLookupDropdownProps> = React.createElement(
       TestLookupDropdown,
       {
-        list1: this.properties.list1,
-        list2: this.properties.list2,
-        list3: this.properties.list3
+        listLand: this.properties.list1,
+        listStadt: this.properties.list2,
+        listStrasse: this.properties.list3
       }
     );
 
@@ -49,6 +49,27 @@ export default class TestLookupDropdownWebPart extends BaseClientSideWebPart<ITe
   /// @ts-ignore
   protected get dataVersion(): Version {
     return Version.parse('1.0');
+  }
+
+  protected checkStadtListIsValid = async (listId: string, parentListId: string): Promise<string> => {
+    if (listId !== undefined && listId !== '') {
+      try {
+        const field: any = await sp.web.lists.getById(listId).fields.getByInternalNameOrTitle('Land').get();
+        if (field.LookupList === `{${parentListId}}`) {
+          return '';
+        } else {
+          return 'Die Spalte \'Land\' verweist nicht auf die erste Liste!';
+        }
+      } catch (error) {
+        return 'Die Liste enthält keine Spalte mit Namen \'Land\'.';
+      }
+    } else {
+      return '';
+    }
+  }
+
+  protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
+    this.render();
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
@@ -84,7 +105,7 @@ export default class TestLookupDropdownWebPart extends BaseClientSideWebPart<ITe
                   onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),
                   properties: this.properties,
                   context: this.context,
-                  onGetErrorMessage: undefined,
+                  onGetErrorMessage: (list => this.checkStadtListIsValid(list, this.properties.list1)),
                   deferredValidationTime: 0,
                   key: 'list2Id'
                 }),
@@ -101,7 +122,6 @@ export default class TestLookupDropdownWebPart extends BaseClientSideWebPart<ITe
                   deferredValidationTime: 0,
                   key: 'list3Id'
                 })
-    // TODO: Spalten auswählen für jede Liste, die gefiltert werden soll, damit man weiß, wonach!
               ]
             }
           ]

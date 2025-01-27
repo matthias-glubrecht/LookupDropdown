@@ -28,13 +28,13 @@ export default class TestLookupDropdown extends React.Component<ITestLookupDropd
           <div className={styles.row}>
             <div className={styles.column}>
               <Label>Land</Label>
-              <LookupFieldDropdown dataSource={this._dataSource} listId={this.props.list1} displayField='Title' />
+              <LookupFieldDropdown dataSource={this._dataSource} listId={this.props.listLand} displayField='Title' />
               <p></p>
               <Label >Stadt</Label>
-              <LookupFieldDropdown dataSource={this._dataSource} listId={this.props.list2} displayField='Title' lookupField='Land' />
+              <LookupFieldDropdown dataSource={this._dataSource} listId={this.props.listStadt} displayField='Title' lookupField='Land' />
               <p> </p>
               <Label >Straße</Label>
-              <LookupFieldDropdown dataSource={this._dataSource} listId={this.props.list3} displayField='Title' lookupField='Stadt' />
+              <LookupFieldDropdown dataSource={this._dataSource} listId={this.props.listStrasse} displayField='Title' lookupField='Stadt' />
             </div>
           </div>
         </div>
